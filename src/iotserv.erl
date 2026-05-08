@@ -33,6 +33,7 @@ handle_call({add, Device}, _From, State) ->
 handle_call({change, Device = {Id, _, _, _, _}}, _From, State) ->
     case iotserv_db:lookup(Id) of
         {ok, _} ->
+            iotserv_db:delete(Id),		
             iotserv_db:insert(Device),
             {reply, ok, State};
         {error, not_found} ->
